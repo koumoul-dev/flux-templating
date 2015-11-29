@@ -1,0 +1,11 @@
+port: 3111
+log:
+  transports:
+    console:
+      type: Console
+      level: debug
+      colorize: true
+      prettyPrint: true
+  loggers:
+    flux-templating:
+      - console

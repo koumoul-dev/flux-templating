@@ -74,7 +74,8 @@ function mainRoute(req, res) {
     var combinedStream = combiner.combine(inputType, outputType, templater, templateBuffer);
 
     if (!combinedStream) {
-      msg = 'Failed to find a conversion path from ' + inputType + ' to ' + outputType + ' from template type ' + templateType;
+      msg = 'Failed to find a conversion path from ' + inputType + ' to ' + outputType;
+      msg += ' from template type ' + templateType;
       log.error(msg, err.stack);
       res.status(401).send(msg + ' ' + err.message);
     }

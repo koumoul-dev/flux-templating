@@ -1,7 +1,7 @@
 // Select converters and templaters streams based on mime types
 // then combine them into a single transform stream
 
-var combine = require('stream-combiner')
+var combine = require('stream-combiner');
 
 var converters = require('./converters');
 
@@ -36,7 +36,9 @@ exports.combine = function(inputType, outputType, templater, templateBuffer) {
   if (inputConverter) {
     combinedStreams.push(inputConverter.createStream(inputType, templaterInputType));
   }
-  combinedStreams.push(templater.createStream(templateBuffer, templaterInputType || inputType, templaterOutputType || outputType));
+  combinedStreams.push(
+    templater.createStream(templateBuffer, templaterInputType || inputType, templaterOutputType || outputType)
+  );
   if (outputConverter) {
     combinedStreams.push(outputConverter.createStream(templaterOutputType, outputType));
   }

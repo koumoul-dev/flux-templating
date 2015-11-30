@@ -2,7 +2,7 @@ var should = require('should');
 
 var api = require('./api');
 
-describe('Handlebars templater', function(){
+describe('Handlebars templater', function() {
   it('should apply a handlebars template to JSON data', function(callback) {
     api.document('application/json', 'text/plain', 'hello_world.txt', {
       who: 'World'

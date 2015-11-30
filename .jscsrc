@@ -1,1 +1,7 @@
-{}
+{
+  "preset": "node-style-guide",
+  "excludeFiles": ["node_modules/**"],
+  "requireTrailingComma": null,
+  "requireCurlyBraces": null,
+  "maximumLineLength": 120
+}

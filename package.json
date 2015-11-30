@@ -10,7 +10,8 @@
     "start-dist": "npm run build && docker run -p 3111:3111 -it --rm --name flux-templating-dist flux-templating-dev",
     "start-detached": "npm run build && docker run -p 3111:3111 -d --name flux-templating-detached flux-templating-dev",
     "stop-detached": "docker stop flux-templating-detached && docker rm flux-templating-detached",
-    "test-dist": "npm run start-detached && sleep 2 && mocha test/integration/*.js && npm run stop-detached"
+    "test-dist": "npm run start-detached && sleep 2 && mocha test/integration/*.js && npm run stop-detached",
+    "lint": "jscs -v . && jshint ."
   },
   "engines": {
     "node": ">=0.12"
@@ -36,7 +37,9 @@
   },
   "devDependencies": {
     "mocha": "^2.3.4",
-    "should": "^7.1.1"
+    "should": "^7.1.1",
+    "jscs": "^1.13.1",
+    "jshint": "^2.8.0"
   },
   "repository": {
     "type": "git",

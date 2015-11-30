@@ -1,0 +1,17 @@
+branches:
+  only:
+    - master
+
+language: node_js
+
+node_js:
+  - '4'
+
+install:
+  - npm install
+  - npm run build
+
+script:
+  - npm test
+  - npm run test-dist
+  - npm run lint

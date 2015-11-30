@@ -54,6 +54,6 @@ Re-build the image and start the service as if installed for production:
 
     npm run start-dist
 
-Run the integration test suite on the service launched with 'npm run start-dist':
+Run the integration test suite from the host machine to the service as if installed for production:
 
     npm run test-dist

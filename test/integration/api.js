@@ -1,25 +1,7 @@
+// Expose API functions for more concise integration tests
+
 var request = require('request');
 var config = require('config');
-var expressApp = require('../../app');
-
-var server;
-before(function runServer(callback) {
-  server = expressApp.listen(config.port, callback);
-  server.on('error', function(err) {
-    // Support using an already running service (useful to test dist)
-    if (err.code !== 'EADDRINUSE') throw err;
-    callback();
-  });
-});
-
-after(function closeServer(callback) {
-  try {
-    server.close(callback);
-  } catch(err) {
-    // Ignore error. Not meaningful.
-    callback();
-  }
-});
 
 exports.document = function(inputType, outputType, template, data, callback) {
   if (typeof data === 'object') data = JSON.stringify(data);

@@ -6,9 +6,11 @@
   "scripts": {
     "build": "docker build -t flux-templating-dev .",
     "start": "docker run -p 3111:3111 -it --rm --name flux-templating-dev -v \"$PWD\":/usr/src/app flux-templating-dev",
-    "test": "docker run -p 3111:3111 -it --rm --name flux-templating-test -v \"$PWD\":/usr/src/app flux-templating-dev ./node_modules/.bin/mocha test/integration/*.js",
-    "start-dist": "docker build -t flux-templating-dev . && docker run -p 3111:3111 -it --rm --name flux-templating-dist flux-templating-dev",
-    "test-dist": "mocha test/integration/*.js"
+    "test": "docker run -p 3111:3111 -it --rm --name flux-templating-test -v \"$PWD\":/usr/src/app flux-templating-dev ./node_modules/.bin/mocha test/server.js test/integration/*.js",
+    "start-dist": "npm run build && docker run -p 3111:3111 -it --rm --name flux-templating-dist flux-templating-dev",
+    "start-detached": "npm run build && docker run -p 3111:3111 -d --name flux-templating-detached flux-templating-dev",
+    "stop-detached": "docker stop flux-templating-detached && docker rm flux-templating-detached",
+    "test-dist": "npm run start-detached && sleep 2 && mocha test/integration/*.js && npm run stop-detached"
   },
   "engines": {
     "node": ">=0.12"

@@ -3,6 +3,13 @@
   "version": "0.1.0",
   "description": "Transform your data into documents. This project integrates various templating and conversion libraries into a RESTful service.",
   "main": "app.js",
+  "scripts": {
+    "build": "docker build -t flux-templating-dev .",
+    "start": "docker run -p 3111:3111 -it --rm --name flux-templating-dev -v \"$PWD\":/usr/src/app flux-templating-dev",
+    "test": "docker run -p 3111:3111 -it --rm --name flux-templating-test -v \"$PWD\":/usr/src/app flux-templating-dev ./node_modules/.bin/mocha test/integration/*.js",
+    "start-dist": "docker build -t flux-templating-dev . && docker run -p 3111:3111 -it --rm --name flux-templating-dist flux-templating-dev",
+    "test-dist": "mocha test/integration/*.js"
+  },
   "engines": {
     "node": ">=0.12"
   },
@@ -28,10 +35,6 @@
   "devDependencies": {
     "mocha": "^2.3.4",
     "should": "^7.1.1"
-  },
-  "scripts": {
-    "start": "node app.js",
-    "test": "mocha test/integration/*.js"
   },
   "repository": {
     "type": "git",

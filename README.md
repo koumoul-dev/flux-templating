@@ -29,3 +29,31 @@ All type definitions should strictly respect standard mime-types. See the [mime-
 A converter is defined by the input and output types it supports. It defines a createStream(inputType, outputType) method that returns a standard node.js transform stream to be applied to the input data.
 
 A templater is defined by the template type it expects and the input and output types it supports. It defines a createStream(templateBuffer, inputType, outputType) method that returns a standard node.js transform stream to be applied to the input data.
+
+## Development environment
+
+Node.js, npm and docker are required.
+
+Install npm dependencies:
+
+    npm install
+
+Build development docker image:
+
+    npm run build
+
+Run the current version of the source (no need to re-build image each time):
+
+    npm start
+
+Test the current version of the source from inside a container (no need to re-build each time):
+
+    npm test
+
+Re-build the image and start the service as if installed for production:
+
+    npm run start-dist
+
+Run the integration test suite on the service launched with 'npm run start-dist':
+
+    npm run test-dist

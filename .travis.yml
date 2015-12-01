@@ -3,9 +3,12 @@ branches:
     - master
 
 language: node_js
-
 node_js:
   - '4'
+
+sudo: required
+services:
+  - docker
 
 install:
   - npm install

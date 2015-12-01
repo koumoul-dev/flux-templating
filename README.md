@@ -1,5 +1,7 @@
 # Flux templating
 
+[![Build Status](https://travis-ci.org/flux-s/flux-templating.svg)](https://travis-ci.org/flux-s/flux-templating)
+
 *Transform your data into documents. This project integrates various templating and conversion libraries into a RESTful service.*
 
 ## API

@@ -6,12 +6,14 @@
   "scripts": {
     "build": "docker build -t flux-templating-dev .",
     "start": "docker run -p 3111:3111 -it --rm --name flux-templating-dev -v \"$PWD\":/usr/src/app flux-templating-dev",
-    "test": "docker run -p 3111:3111 -it --rm --name flux-templating-test -v \"$PWD\":/usr/src/app flux-templating-dev ./node_modules/.bin/mocha test/server.js test/integration/*.js",
+    "test": "rm -rf coverage && docker run -p 3111:3111 -it --rm --name flux-templating-test -v \"$PWD\":/usr/src/app -v \"$PWD\"/coverage:/usr/src/app/coverage flux-templating-dev ./node_modules/.bin/istanbul cover ./node_modules/.bin/_mocha -- test/server.js test/integration/*.js",
     "start-dist": "npm run build && docker run -p 3111:3111 -it --rm --name flux-templating-dist flux-templating-dev",
     "start-detached": "npm run build && docker run -p 3111:3111 -d --name flux-templating-detached flux-templating-dev",
     "stop-detached": "docker stop flux-templating-detached && docker rm flux-templating-detached",
     "test-dist": "npm run start-detached && sleep 2 && mocha test/integration/*.js && npm run stop-detached",
-    "lint": "jscs -v . && jshint ."
+    "lint": "jscs -v . && jshint .",
+    "check-coverage": "./node_modules/.bin/istanbul check-coverage --statement 95",
+    "coveralls": "cat ./coverage/lcov.info | ./node_modules/coveralls/bin/coveralls.js"
   },
   "engines": {
     "node": ">=0.12"
@@ -36,10 +38,12 @@
     "winston-configure": "^0.1.0"
   },
   "devDependencies": {
-    "mocha": "^2.3.4",
-    "should": "^7.1.1",
+    "coveralls": "^2.11.4",
+    "istanbul": "^0.4.1",
     "jscs": "^1.13.1",
-    "jshint": "^2.8.0"
+    "jshint": "^2.8.0",
+    "mocha": "^2.3.4",
+    "should": "^7.1.1"
   },
   "repository": {
     "type": "git",

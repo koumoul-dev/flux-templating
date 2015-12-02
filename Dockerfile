@@ -21,4 +21,4 @@ COPY . /usr/src/app/
 
 EXPOSE 3111
 
-CMD node app.js
+CMD node server.js

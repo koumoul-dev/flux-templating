@@ -10,6 +10,15 @@ var log = require('winston').loggers.get('flux-templating');
 
 var upPathRegexp = /\.\./;
 
+function pipeToReqRes(req, transform, res) {
+  transform.on('error', function(err) {
+    res.status(err.statusCode || 500);
+    res.end(err.message);
+  });
+
+  return req.pipe(transform).pipe(res);
+}
+
 // Everything is orchestrated in this route !
 // find the right templaters and converters based on mime types
 // then apply the resulting transform stream to the request and
@@ -31,11 +40,7 @@ function mainRoute(req, res) {
     }
     var converterStream = converter.createStream(inputType, outputType);
 
-    converterStream.on('error', function(err) {
-      res.status(err.statusCode || 500).send(err.message);
-    });
-
-    return req.pipe(converterStream).pipe(res);
+    return pipeToReqRes(req, converterStream, res);
   }
 
   if (templatePath.match(upPathRegexp)) {
@@ -68,7 +73,7 @@ function mainRoute(req, res) {
     if (err) {
       msg = 'fail to read template from path ' + templatePath;
       log.error(msg, err.stack);
-      res.status(500).send(msg + ' ' + err.message);
+      return res.status(500).send(msg + ' ' + err.message);
     }
 
     var combinedStream = combiner.combine(inputType, outputType, templater, templateBuffer);
@@ -76,15 +81,11 @@ function mainRoute(req, res) {
     if (!combinedStream) {
       msg = 'Failed to find a conversion path from ' + inputType + ' to ' + outputType;
       msg += ' from template type ' + templateType;
-      log.error(msg, err.stack);
-      res.status(401).send(msg + ' ' + err.message);
+      log.error(msg);
+      return res.status(501).send(msg);
     }
 
-    combinedStream.on('error', function(err) {
-      res.status(err.statusCode || 500).send(err.message);
-    });
-
-    req.pipe(combinedStream).pipe(res);
+    pipeToReqRes(req, combinedStream, res);
   });
 }
 

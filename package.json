@@ -20,9 +20,11 @@
   },
   "engineStrict": true,
   "dependencies": {
+    "JSONStream": "^1.0.7",
     "async": "^1.5.0",
     "config": "^1.17.1",
     "cors": "^2.7.1",
+    "csv": "^0.4.6",
     "event-stream": "^3.3.2",
     "express": "^4.13.3",
     "grunt": "^0.4.5",

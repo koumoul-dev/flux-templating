@@ -16,6 +16,7 @@ exports.createStream = function(templateBuffer) {
   return es.through(function write(data) {
     input += data.toString();
   }, function end() {
+
     try {
       input = JSON.parse(input);
     } catch (e) {
@@ -35,7 +36,17 @@ exports.createStream = function(templateBuffer) {
       return this.emit('end');
     }
 
-    this.emit('data', template(input));
+    var result;
+    try {
+      result = template(input);
+    } catch (e) {
+      log.warn('Fail to render handlebars template', e.stack);
+      e.statusCode = 400;
+      this.emit('error', e);
+      return this.emit('end');
+    }
+
+    this.emit('data', result);
     this.emit('end');
   });
 };

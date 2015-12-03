@@ -1,6 +1,7 @@
 # Flux templating
 
 [![Build Status](https://travis-ci.org/flux-s/flux-templating.svg)](https://travis-ci.org/flux-s/flux-templating)
+[![Coverage Status](https://coveralls.io/repos/flux-s/flux-templating/badge.svg?branch=master&service=github)](https://coveralls.io/github/flux-s/flux-templating?branch=master)
 
 *Transform your data into documents. This project integrates various templating and conversion libraries into a RESTful service.*
 

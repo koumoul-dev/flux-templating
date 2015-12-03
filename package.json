@@ -27,6 +27,7 @@
     "csv": "^0.4.6",
     "event-stream": "^3.3.2",
     "express": "^4.13.3",
+    "geojson-stream": "0.0.1",
     "grunt": "^0.4.5",
     "handlebars": "^4.0.5",
     "handlebars-helpers": "^0.5.8",
@@ -34,8 +35,10 @@
     "js-yaml": "^3.4.6",
     "mime-types": "^2.1.7",
     "node-config": "0.0.2",
+    "ogr2ogr": "^0.5.1",
     "request": "^2.67.0",
     "stream-combiner": "^0.2.2",
+    "topojson": "^1.6.19",
     "winston": "^2.1.1",
     "winston-configure": "^0.1.0"
   },

@@ -1,4 +1,5 @@
 // Expose API functions for more concise integration tests
+process.env.NODE_ENV = 'test';
 
 var request = require('request');
 var config = require('config');

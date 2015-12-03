@@ -30,4 +30,14 @@ describe('Handlebars templater', function() {
       callback();
     });
   });
+
+  it('should get a 400 for bad handlebars template', function(callback) {
+    api.document('application/json', 'text/plain', 'hello_world_bad.txt', {
+      who: 'World'
+    }, function(err) {
+      should.exist(err);
+      err.should.have.property('code', 400);
+      callback();
+    });
+  });
 });

@@ -27,20 +27,12 @@ exports.createStream = function(templateBuffer) {
     }
 
     var template;
-    try {
-      template = handlebars.compile(templateBuffer.toString());
-    } catch (e) {
-      log.warn('Fail to compile handlebars template', e.stack);
-      e.statusCode = 400;
-      this.emit('error', e);
-      return this.emit('end');
-    }
-
     var result;
     try {
+      template = handlebars.compile(templateBuffer.toString());
       result = template(input);
     } catch (e) {
-      log.warn('Fail to render handlebars template', e.stack);
+      log.warn('Fail to compile or render handlebars template', e.stack);
       e.statusCode = 400;
       this.emit('error', e);
       return this.emit('end');

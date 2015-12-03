@@ -1,5 +1,6 @@
 var path = require('path');
 var fs = require('fs');
+var config = require('config');
 var express = require('express');
 var mime = require('mime-types');
 var templaters = require('./templaters');
@@ -46,14 +47,14 @@ function mainRoute(req, res) {
   if (templatePath.match(upPathRegexp)) {
     msg = 'The template path ' + templatePath + ' tries to go up in the directories. This is forbidden.';
     log.warn(msg);
-    return res.send(400, msg);
+    return res.send(403, msg);
   }
 
   var templateType = mime.lookup(templatePath);
   if (!templateType) {
     msg = 'lookup of mime-type failed for template path ' + templatePath + '. Please use a meaningful file extension.';
     log.debug(msg);
-    return res.status(501).send(msg);
+    return res.status(400).send(msg);
   }
 
   var templater = templaters.find(templateType);
@@ -63,7 +64,7 @@ function mainRoute(req, res) {
     return res.status(501).send(msg);
   }
 
-  var actualPath = path.resolve(__dirname, '../templates/', templatePath);
+  var actualPath = path.resolve(__dirname, config.templatesPath, templatePath);
   fs.readFile(actualPath, function(err, templateBuffer) {
     if (err && err.code === 'ENOENT') {
       msg = 'template not found from path ' + templatePath;

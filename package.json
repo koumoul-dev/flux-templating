@@ -8,7 +8,7 @@
     "start": "docker run -p 3111:3111 -it --rm --name flux-templating-dev -v \"$PWD\":/usr/src/app flux-templating-dev",
     "test": "rm -rf coverage && docker run -p 3111:3111 -it --rm --name flux-templating-test -v \"$PWD\":/usr/src/app -v \"$PWD\"/coverage:/usr/src/app/coverage flux-templating-dev ./node_modules/.bin/istanbul cover ./node_modules/.bin/_mocha -- test/server.js test/integration/*.js",
     "start-dist": "npm run build && docker run -p 3111:3111 -it --rm --name flux-templating-dist flux-templating-dev",
-    "start-detached": "npm run build && docker run -p 3111:3111 -d --name flux-templating-detached flux-templating-dev",
+    "start-detached": "npm run build && docker run -p 3111:3111 -v \"$PWD\"/test:/usr/src/app/test -d --name flux-templating-detached flux-templating-dev",
     "stop-detached": "docker stop flux-templating-detached && docker rm flux-templating-detached",
     "test-dist": "npm run start-detached && sleep 2 && mocha test/integration/*.js && npm run stop-detached",
     "lint": "jscs -v . && jshint .",

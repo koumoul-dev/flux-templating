@@ -1,5 +1,5 @@
 var csv = require('csv');
-var JSONStream = require('JSONStream')
+var JSONStream = require('JSONStream');
 var es = require('event-stream');
 var combine = require('stream-combiner');
 

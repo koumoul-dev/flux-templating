@@ -1,4 +1,5 @@
 port: 3111
+templatesPath: ../templates/
 log:
   transports:
     console:

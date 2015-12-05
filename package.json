@@ -12,8 +12,7 @@
     "stop-detached": "docker stop flux-templating-detached && docker rm flux-templating-detached",
     "test-dist": "npm run start-detached && sleep 2 && mocha test/integration/*.js && npm run stop-detached",
     "lint": "jscs -v . && jshint .",
-    "check-coverage": "./node_modules/.bin/istanbul check-coverage --statement 95",
-    "coveralls": "docker run -p 3111:3111 -it --rm --name flux-templating-test -v \"$PWD\":/usr/src/app flux-templating-dev sh -c \"cat ./coverage/lcov.info | ./node_modules/coveralls/bin/coveralls.js\""
+    "check-coverage": "./node_modules/.bin/istanbul check-coverage --statement 95"
   },
   "engines": {
     "node": ">=0.12"

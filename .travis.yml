@@ -2,8 +2,8 @@ env:
   global:
     # COVERALLS_REPO_TOKEN to send coverage report to coveralls
     secure: "PE/zW1jSmXeDRWEtO+Z7HCX06GJTarsoAmlHggI29bwRkfxM8teqwBbW8huCGAvVtrr4CUpBMlIjcqzEafHQEOlriayn/+lX2NHV4GOOj9o1G5Qr3iaPuIscCsDvgKMQ38dyOSruGcR+SI8Wg5HNKZdZN6dNRecIk92R8qCInsqYJk6dPQ2lBcOIMbZRUfQx1CG0qnKbR/9epgu0OAISjBhX8McdoNSNX+ZtPZaO/lF3iTW/GkyL4R/Ij+Fy7aDMcXCvzRLQ8vJ8OOPqy2SwMeVcW7yO8jdS41ALHYfY/pw1/MXCdEgWg4H6d0pUnvv5Y7cPvicqkr5lIj0jaxbC4ox+RgH9rtSRzTZ6J3wdu4/kVWzFmDmZwz3b3YE4QrZfQzSG4hCzxeWMSqB1Os+dtS+UGsmK0+RWvN7eyaNr2d7V8IKHKlxL6uNmGfeVWsbcDympbH8UR/96iBM1y0WtYHIFHtIY+i5U8meiXkMuPaCc5TruUakSXYV+TTQv3WTeCGN4IxNtyoIO65z7gZ9pGQMMDNYT7bZ3+1QAalTRm6U7bk5JHzbSf1gouOTolEnFgMT4lVyOzNNpapnsxfrLzH9bBJcDgOEwDsTmEKSgnsCmxfnpOx/EKcfUgiqOatsjDHWiHrlq3UXi+aNnXxGhv228lyxjs58TbrGZQy3ZBS4="
-    # trigger_token to trigger a build on dockerhub
-    secure: "Ckz0erJux6gLnkS6/iWgZVBdplsjTTwNaLNLL7zGSMk4FOvuKiXIa5dss87j4MLp1ZHV39X3UZ6f1XTcmnS+sAj6tMj2grb8J6C7Cu5mNGAlI48arqhpk5+YFSoOR7/zGU+cVR19b4LF5T4kHwe+QFpLKwrNza1f3QtvA5RGSFU0bILHnZdnSBRM7H7GgV36HxJ0jooGAVlnd5IPiMFYIKezuJlHhbCTnsoXwNwGIXqi5An/fbs6BSpWwqunJe6oEqvhjYtR9YL8jb8szd8t/XlJhWa2Ma6V+wOvKknEOVpS0hA19nPJnfru2CRt8eCYYMFQVPQKz8mY0dLMQUd/RoLBn8gwrJOSPeB4u/G2F+pqFtG6U20tzaFfR2XCxCJ0cJZSRyjHS6mswwMjr0Z2yVBWYbVwesfQj/UTT97rAUb0REgmnQI1vim/q6lHQvahpeGGHFE8te6uzuDJnGsvh8TqF1asLCIDpJ6ffD5EdF1YDCdQQeogyDpL4q/hmQi4va0dYNqCX5LyZaDsNxKldNU9emzL8t23H/OCo/gvFdK5pWv7o+ykQ+9lVOat5mJV9Go+q5AqTZ8PptM1d3oU0BfJBPb6ZcjBLL2UQB3mSfoFgpPKtOsgolGKFQe64vIEW4BPNefhiYWqR3ld8NJU5Wv0EgM42E4ba/4d563C6QQ="
+    # DOCKERHUB_TRIGGER_TOKEN to trigger a build on dockerhub
+    secure: "Em2s/k0KtZw9p+OXmOnX+wT5ubmNS9grAin+vR5sP+2gbWPJbRw2rYyv1WQMBBcphQK3NNeG7Bb3rd7QkEjZLMlrnyVCsC8fMLSpMHm3Iq9SnifAxF5HgxlhN/GxVIj52iIVakvc+1k1vea/t4EU8JooF3m0hMNfORyvdzDrPvZnjqTVOWG4YFLB9N8ETDxLXA6GWMXnwdMKrysV8pygzjt5s5KV38/9p+728Qt+2UiYw3uYGmRFn3s/fSs4BFbvofPp21BI3/BRnqYIvXD5OELCj7oVcRWGPELT0PMjrvBdfNP6Aiuy5ig+bLJN91u7p3qLig1/TNYosmdXPhxQ9gEpafE+HRSkEfm8Ac2HGE0x/XU9KzZZ4t4If1P1G1lNtL/QWtyxHb3euTmDZOK1KURtVbY+NremYpvEhPYNBLnfGKTgwYYD4G7eTySujMGqYR2gAY7GBaNrVzv6J68hcnAQ8WQ9OY3SKhC7HjMISyq9/m+3yUX3xooNvJnqoR3L4YDhrFZnP0ArOIAwpeV+q7Am7nqZMKq0EL5hCd6n7r9j5/DWzdTrpNgNJR+U6ZEtPOgYvDKlITKo+ginQtRqgL9ighCx75LrdTUp3jrSynAhZZUy6wQZ80GXUUbYdWN79jF0z5jFWHBjEAGLPm49jgySX4omIISJmvOxvaeqYGQ="
 
 branches:
   only:
@@ -29,4 +29,7 @@ script:
   - npm run test-dist
 
 after_script:
-  - curl -XPOST https://registry.hub.docker.com/u/albanm/flux-templating/trigger/"$trigger_token"/
+  - docker run -p 3111:3111 -e COVERALLS_SERVICE_NAME=travis-ci -e COVERALLS_REPO_TOKEN=$COVERALLS_REPO_TOKEN -it --rm --name flux-templating-test -v "$PWD":/usr/src/app flux-templating-dev sh -c "cat ./coverage/lcov.info | ./node_modules/coveralls/bin/coveralls.js"
+
+after_success:
+  - curl -XPOST https://registry.hub.docker.com/u/albanm/flux-templating/trigger/"$DOCKERHUB_TRIGGER_TOKEN"/

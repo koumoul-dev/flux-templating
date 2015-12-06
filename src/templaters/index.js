@@ -1,4 +1,7 @@
-var templaters = [require('./handlebars')];
+var templaters = [
+  require('./handlebars'),
+  require('./docxtemplater')
+];
 
 // Find the right templater to use given the mime-type of a template file
 exports.find = function(templateType) {

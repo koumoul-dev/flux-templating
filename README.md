@@ -11,9 +11,17 @@ Apply a HTML template to JSON data:
 
     curl -XPOST http://localhost:3111/document?template=hello_world.html -d '{"who":"World"}' -H 'content-type:application/json' -H 'accept:text/html'
 
+Check the same example on the service installed on Amazon ECS:
+
+    curl -XPOST http://ec2-54-213-211-104.us-west-2.compute.amazonaws.com/document?template=hello_world.html -d '{"who":"World"}' -H 'content-type:application/json' -H 'accept:text/html'
+
 Apply the same template but ask for a PDF document as output:
 
     curl -XPOST http://localhost:3111/document?template=hello_world.html -d '{"who":"World"}' -H 'content-type:application/json' -H 'accept:application/pdf' > hello_world.pdf
+
+Apply a docx template to JSON data:
+
+    curl -XPOST http://localhost:3111/document?template=hello_world.docx -d '{"who":"World"}' -H 'content-type:application/json' -H 'accept:application/vnd.openxmlformats-officedocument.wordprocessingml.document' -o test.docx
 
 ## Supported transformations
 
@@ -24,6 +32,10 @@ It uses [html-pdf](https://www.npmjs.com/package/html-pdf) which itself uses [ph
 ### Textual and HTML templating
 
 It uses [handlebars](http://handlebarsjs.com/) with a bunch of useful additional helpers from [handlebars-helpers](https://github.com/assemble/handlebars-helpers).
+
+### Docx templating
+
+It uses [docxtemplater](https://github.com/open-xml-templating/docxtemplater) with its optional angular expressions parser.
 
 ## Writing converters and templaters
 

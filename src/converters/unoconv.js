@@ -44,12 +44,24 @@ exports.outputTypes = [
 
 
 var listener;
-
+var UNOConnection = 'socket,host=127.0.0.1,port=2002,tcpNoDelay=1;urp;StarOffice.ComponentContext';
 function prepareListener() {
-  log.debug('Unoconv listener will be spawned');
-  listener = spawn('unoconv', ['--listener']);
+  log.debug('UNO listener (libreoffice) will be spawned');
+
+  // imitation of unoconv:
+  // https://github.com/dagwieers/unoconv/blob/master/unoconv#L806
+  listener = spawn('soffice', [
+    '--headless',
+    '--invisible',
+    '--nocrashreport',
+    '--nodefault',
+    '--nofirststartwizard',
+    '--nologo',
+    '--norestore',
+    '--accept=' + UNOConnection
+  ]);
   listener.on('exit', function(code) {
-    log.warn('Unoconv listener exited (it should act as a daemon) with code ' + code);
+    log.warn('UNO listener exited (it should act as a daemon) with code ' + code);
     prepareListener();
   });
 }

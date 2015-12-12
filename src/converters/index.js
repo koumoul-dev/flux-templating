@@ -1,4 +1,8 @@
-var converters = [require('./html-pdf'), require('./csv-json')];
+var converters = [
+  require('./html-pdf'),
+  require('./csv-json'),
+  require('./unoconv')
+];
 
 // Find the right converter to use given the mime types of desired inputs and outputs
 exports.find = function(inputType, outputType) {

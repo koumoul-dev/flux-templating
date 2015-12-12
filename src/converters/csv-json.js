@@ -1,20 +1,20 @@
 var csv = require('csv');
 var JSONStream = require('JSONStream');
-var es = require('event-stream');
 var combine = require('stream-combiner');
+var through2 = require('through2');
 
 exports.inputTypes = ['application/json', 'text/csv'];
 exports.outputTypes = ['application/json', 'text/csv'];
 
 exports.createStream = function(inputType) {
-  var bufferToString = es.map(function(data, callback) {
-    callback(null, data.toString());
+  var bufferer = through2(function(chunk, enc, callback) {
+    callback(null, new Buffer(chunk));
   });
   if (inputType === 'text/csv') {
-    return combine([bufferToString, csv.parse({
+    return combine([csv.parse({
       columns: true
-    }), JSONStream.stringify()]);
+    }), JSONStream.stringify(), bufferer]);
   } else {
-    return combine([bufferToString, JSONStream.parse('*'), csv.stringify()]);
+    return combine([JSONStream.parse('*'), csv.stringify(), bufferer]);
   }
 };

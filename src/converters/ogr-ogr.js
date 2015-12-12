@@ -1,5 +1,5 @@
 // This one requires to install the gdal package
-var ogr2ogr = require('ogr2ogr');
+/*var ogr2ogr = require('ogr2ogr');
 
 // we should start with shapefiel and gpx, perhaps kml too ?
 exports.inputTypes = ['application/vnd.geo+json'];
@@ -18,3 +18,4 @@ exports.createStream = function(inputType) {
   // var ogr2 = ogr2ogr('/path/to/another/spatial/file')
   // ogr2.stream().pipe(writeStream)
 };
+*/

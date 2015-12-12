@@ -47,7 +47,7 @@ function mainRoute(req, res) {
   if (templatePath.match(upPathRegexp)) {
     msg = 'The template path ' + templatePath + ' tries to go up in the directories. This is forbidden.';
     log.warn(msg);
-    return res.send(403, msg);
+    return res.status(403).send(msg);
   }
 
   var templateType = mime.lookup(templatePath);

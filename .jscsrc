@@ -4,5 +4,6 @@
   "requireTrailingComma": null,
   "requireCurlyBraces": null,
   "maximumLineLength": 120,
-  "requireSpaceAfterLineComment": null
+  "requireSpaceAfterLineComment": null,
+  "requireCapitalizedComments": null
 }

@@ -5,14 +5,15 @@ exports.inputTypes = ['text/html'];
 exports.outputTypes = ['application/pdf'];
 
 exports.createStream = function() {
-  var input = '';
+  var inputBuffers = [];
 
   // We consume the data stream entirely as
   // html-pdf doesn't have a input stream mode
   return es.through(function write(data) {
-    input += data.toString();
+    inputBuffers.push(data);
   }, function end() {
     var _this = this;
+    var input = Buffer.concat(inputBuffers).toString();
     pdf.create(input).toStream(function(err, pdfStream) {
       if (err) _this.emit('error', err);
 

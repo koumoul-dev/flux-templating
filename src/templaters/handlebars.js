@@ -9,16 +9,16 @@ exports.inputTypes = ['application/json'];
 exports.outputTypes = ['text/plain', 'text/html'];
 
 exports.createStream = function(templateBuffer) {
-  var input = '';
+  var inputBuffers = [];
 
   // We consume the data stream entirely as
   // handlebars doesn't have a stream mode
   return es.through(function write(data) {
-    input += data.toString();
+    inputBuffers.push(data);
   }, function end() {
-
+    var input;
     try {
-      input = JSON.parse(input);
+      input = JSON.parse(Buffer.concat(inputBuffers).toString());
     } catch (e) {
       log.warn('Fail to parse input data', e.stack);
       e.statusCode = 400;
@@ -38,7 +38,7 @@ exports.createStream = function(templateBuffer) {
       return this.emit('end');
     }
 
-    this.emit('data', result);
+    this.emit('data', new Buffer(result));
     this.emit('end');
   });
 };

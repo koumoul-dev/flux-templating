@@ -8,7 +8,7 @@ In addition, TopoJSON facilitates applications that use topology,
 such as topology-preserving shape simplification, automatic map coloring,
 and cartograms.
 */
-var topojson = require("topojson");
+/*var topojson = require('topojson');
 var es = require('event-stream');
 var combine = require('stream-combiner');
 var geojsonStream = require('geojson-stream');
@@ -33,3 +33,4 @@ exports.createStream = function() {
   // }); // convert to TopoJSON
   // console.log(topology.objects.collection); // inspect TopoJSON
 };
+*/

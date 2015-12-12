@@ -16,16 +16,16 @@ exports.inputTypes = ['application/json'];
 exports.outputTypes = ['application/vnd.openxmlformats-officedocument.wordprocessingml.document'];
 
 exports.createStream = function(templateBuffer) {
-  var input = '';
+  var inputBuffers = [];
 
   // We consume the data stream entirely as
-  // handlebars doesn't have a stream mode
+  // docx-templater doesn't have a stream mode
   return es.through(function write(data) {
-    input += data.toString();
+    inputBuffers.push(data);
   }, function end() {
-
+    var input;
     try {
-      input = JSON.parse(input);
+      input = JSON.parse(Buffer.concat(inputBuffers).toString());
     } catch (e) {
       log.warn('Fail to parse input data', e.stack);
       e.statusCode = 400;
@@ -46,7 +46,7 @@ exports.createStream = function(templateBuffer) {
         type: 'nodebuffer'
       });
     } catch (e) {
-      log.warn('Fail to compile or render handlebars template', e.stack);
+      log.warn('Fail to compile or render dox template', e.stack);
       e.statusCode = 400;
       this.emit('error', e);
       return this.emit('end');

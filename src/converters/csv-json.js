@@ -3,6 +3,7 @@ var JSONStream = require('JSONStream');
 var combine = require('stream-combiner');
 var through2 = require('through2');
 
+exports.id = 'csv-json';
 exports.inputTypes = ['application/json', 'text/csv'];
 exports.outputTypes = ['application/json', 'text/csv'];
 

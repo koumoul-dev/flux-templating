@@ -1,0 +1,17 @@
+flux-templating:
+  image: node:4.2
+  working_dir: /usr/src/app
+  command: "node server.js"
+  volumes:
+    - .:/usr/src/app
+  ports:
+    - 3111:3111
+  links:
+    - unoconv-worker:unoconv-worker
+    - phantomjs-worker:phantomjs-worker
+
+unoconv-worker:
+  image: fluxs/unoconv-worker
+
+phantomjs-worker:
+  image: fluxs/phantomjs-worker

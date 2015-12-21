@@ -4,6 +4,7 @@ var es = require('event-stream');
 
 var log = require('winston').loggers.get('flux-templating');
 
+exports.id = 'handlebars';
 exports.templateTypes = ['text/x-handlebars-template', 'text/plain', 'text/html'];
 exports.inputTypes = ['application/json'];
 exports.outputTypes = ['text/plain', 'text/html'];

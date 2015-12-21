@@ -13,6 +13,7 @@ var upPathRegexp = /\.\./;
 
 function pipeToReqRes(req, transform, res) {
   transform.on('error', function(err) {
+    log.error('Error in stream pipeline', err.stack);
     res.status(err.statusCode || 500);
     res.end(err.message);
   });
@@ -39,6 +40,7 @@ function mainRoute(req, res) {
       log.debug(msg);
       return res.send(501, msg);
     }
+    log.debug('Simple conversion from ' + inputType + ' to ' + outputType + ' use converter ' + converter.id);
     var converterStream = converter.createStream(inputType, outputType);
 
     return pipeToReqRes(req, converterStream, res);
@@ -56,6 +58,7 @@ function mainRoute(req, res) {
     log.debug(msg);
     return res.status(400).send(msg);
   }
+  log.debug('Template mime-type is %s based on template path %s', templateType, templatePath);
 
   var templater = templaters.find(templateType);
   if (!templater) {
@@ -63,6 +66,7 @@ function mainRoute(req, res) {
     log.debug(msg);
     return res.status(501).send(msg);
   }
+  log.debug('Templater %s selected base on template mime-type %s', templater.id, templateType);
 
   var actualPath = path.resolve(__dirname, config.templatesPath, templatePath);
   fs.readFile(actualPath, function(err, templateBuffer) {

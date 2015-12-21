@@ -19,16 +19,15 @@ services:
 
 install:
   - npm install
-  - npm run build
 
 script:
-  - npm run lint
-  - npm test
-  - npm run check-coverage
-  - npm run test-dist
+  - make lint
+  - make test
+  - make check-coverage
+  - make test-dist
 
 after_script:
-  - docker run -p 3111:3111 -e COVERALLS_SERVICE_NAME=travis-ci -e COVERALLS_REPO_TOKEN="$COVERALLS_REPO_TOKEN" -it --rm --name flux-templating-test -v "$PWD":/usr/src/app flux-templating-dev sh -c "cat ./coverage/lcov.info | ./node_modules/coveralls/bin/coveralls.js"
+  - docker run -p 3111:3111 -e COVERALLS_SERVICE_NAME=travis-ci -e COVERALLS_REPO_TOKEN="$COVERALLS_REPO_TOKEN" -it --rm --name flux-templating-test -v "$PWD":/usr/src/app fluxtemplating_flux-templating_1 sh -c "cat ./coverage/lcov.info | ./node_modules/coveralls/bin/coveralls.js"
 
 after_success:
   - curl -XPOST https://registry.hub.docker.com/u/albanm/flux-templating/trigger/"$DOCKERHUB_TRIGGER_TOKEN"/

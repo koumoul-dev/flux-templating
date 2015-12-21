@@ -1,6 +1,6 @@
 var converters = [
-  require('./html-pdf'),
   require('./csv-json'),
+  require('./phantomjs'),
   require('./unoconv')
 ];
 

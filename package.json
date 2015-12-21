@@ -2,17 +2,10 @@
   "name": "flux-templating",
   "version": "0.1.0",
   "description": "Transform your data into documents. This project integrates various templating and conversion libraries into a RESTful service.",
-  "main": "app.js",
+  "main": "server.js",
   "scripts": {
-    "build": "docker build -t flux-templating-dev .",
-    "start": "docker run -p 3111:3111 -it --rm --name flux-templating-dev -v \"$PWD\":/usr/src/app flux-templating-dev",
-    "test": "rm -rf coverage && docker run -p 3111:3111 -it --rm --name flux-templating-test -v \"$PWD\":/usr/src/app -v \"$PWD\"/coverage:/usr/src/app/coverage flux-templating-dev ./node_modules/.bin/istanbul cover ./node_modules/.bin/_mocha -- test/server.js test/integration/*.js",
-    "start-dist": "npm run build && docker run -p 3111:3111 -it --rm --name flux-templating-dist flux-templating-dev",
-    "start-detached": "npm run build && docker run -p 3111:3111 -v \"$PWD\"/test:/usr/src/app/test -d --name flux-templating-detached flux-templating-dev",
-    "stop-detached": "docker stop flux-templating-detached && docker rm flux-templating-detached",
-    "test-dist": "npm run start-detached && sleep 2 && mocha test/integration/*.js && npm run stop-detached",
-    "lint": "jscs -v . && jshint .",
-    "check-coverage": "./node_modules/.bin/istanbul check-coverage --statement 95"
+    "start": "make start",
+    "test": "make test"
   },
   "engines": {
     "node": ">=0.12"
@@ -32,7 +25,7 @@
     "grunt": "^0.4.5",
     "handlebars": "^4.0.5",
     "handlebars-helpers": "^0.5.8",
-    "html-pdf": "^1.4.0",
+    "hostile": "^1.0.2",
     "js-yaml": "^3.4.6",
     "mime-types": "^2.1.7",
     "node-config": "0.0.2",
@@ -46,6 +39,7 @@
     "winston-configure": "^0.1.0"
   },
   "devDependencies": {
+    "api-benchmark": "^0.2.5",
     "coveralls": "^2.11.4",
     "istanbul": "^0.4.1",
     "jscs": "^1.13.1",

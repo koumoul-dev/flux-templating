@@ -29,3 +29,5 @@ node_modules
 
 # Docker
 trusted-dockerfile-*
+
+benchmark-results/*

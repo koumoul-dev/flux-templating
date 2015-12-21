@@ -18,7 +18,7 @@ test-dist:
 
 # Run the benchmark part of the test suite againt a new distributable image
 benchmark:
-	docker-compose -f docker-compose-dist.yml build ; docker-compose -f docker-compose-dist.yml up -d ; sleep 2 ; rm -rf benchmark-results/* ; node test/benchmark/simple.js ; docker-compose -f docker-compose-dist.yml stop
+	docker-compose -f docker-compose-dist.yml build ; docker-compose -f docker-compose-dist.yml up -d ; sleep 2 ; mkdir -p benchmark-results ; rm -rf benchmark-results/* ; node test/benchmark/simple.js ; docker-compose -f docker-compose-dist.yml stop
 
 lint:
 	jscs -v . ; jshint .

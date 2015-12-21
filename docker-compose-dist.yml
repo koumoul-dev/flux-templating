@@ -2,25 +2,27 @@ flux-templating:
   build: .
   ports:
     - 3111:3111
-  links:
-    - unoconv-worker-1:unoconv-worker-1
-    - unoconv-worker-2:unoconv-worker-2
-    - unoconv-worker-3:unoconv-worker-3
-    - phantomjs-worker-1:phantomjs-worker-1
-    - phantomjs-worker-2:phantomjs-worker-2
-
 
 unoconv-worker-1:
   image: fluxs/unoconv-worker
-
 unoconv-worker-2:
   image: fluxs/unoconv-worker
-
 unoconv-worker-3:
+  image: fluxs/unoconv-worker
+unoconv-worker-4:
+  image: fluxs/unoconv-worker
+unoconv-worker-5:
+  image: fluxs/unoconv-worker
+unoconv-worker-6:
+  image: fluxs/unoconv-worker
+unoconv-worker-7:
+  image: fluxs/unoconv-worker
+unoconv-worker-8:
+  image: fluxs/unoconv-worker
+unoconv-worker-9:
+  image: fluxs/unoconv-worker
+unoconv-worker-10:
   image: fluxs/unoconv-worker
 
 phantomjs-worker-1:
-  image: fluxs/phantomjs-worker
-
-phantomjs-worker-2:
   image: fluxs/phantomjs-worker

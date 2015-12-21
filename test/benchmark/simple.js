@@ -55,7 +55,7 @@ var routes = {
 
 apiBenchmark.measure(services, routes, {
   runMode: 'parallel',
-  maxConcurrentRequests: 10
+  maxConcurrentRequests: 20
 }, function(err, results) {
   if (err) throw err;
   apiBenchmark.getHtml(results, function(err, html) {

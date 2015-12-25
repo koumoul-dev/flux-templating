@@ -9,4 +9,4 @@ Dockerfile
 .jshintrc
 test
 trusted-dockerfile-*
-coverage
+build

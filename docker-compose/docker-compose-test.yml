@@ -1,10 +1,10 @@
 flux-templating:
   image: node:4.2
   working_dir: /usr/src/app
-  command: ./node_modules/.bin/istanbul cover ./node_modules/.bin/_mocha -- test/server.js test/integration/*.js
+  command: ./node_modules/.bin/istanbul cover ./node_modules/.bin/_mocha -- api/test/server.js api/test/integration/*.js
   volumes:
-    - .:/usr/src/app
-    - ./coverage:/usr/src/app/coverage
+    - ..:/usr/src/app
+    - ../build/coverage:/usr/src/app/build/coverage
   ports:
     - 3111:3111
   links:

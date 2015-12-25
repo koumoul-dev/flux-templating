@@ -2,7 +2,7 @@
 // Useful only if you didn't already run a server manually
 process.env.NODE_ENV = 'test';
 
-var app = require('../src/app');
+var app = require('../../app');
 
 before(function runServer(callback) {
   app.run(callback);

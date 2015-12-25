@@ -10,7 +10,7 @@ exports.document = function(inputType, outputType, template, data, callback) {
   if (typeof data === 'object' && !isBuffer) data = JSON.stringify(data);
 
   var options = {
-    url: 'http://localhost:' + config.port + '/document',
+    url: 'http://localhost:' + config.port + '/api/v1/document',
     body: data,
     headers: {
       'Content-Type': inputType,

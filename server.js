@@ -1,5 +1,5 @@
 var config = require('config');
-var app = require('./src/app');
+var app = require('./app');
 var log = app.log;
 
 app.run(function(err) {

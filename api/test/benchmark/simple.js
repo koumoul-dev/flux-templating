@@ -8,7 +8,7 @@ var services = {
 var routes = {
   handlebarsToText: {
     method: 'get',
-    route: 'document',
+    route: 'api/v1/document',
     expectedStatusCode: 200,
     headers: {
       'Content-Type': 'application/json',
@@ -23,7 +23,7 @@ var routes = {
   },
   handlebarsToPDF: {
     method: 'get',
-    route: 'document',
+    route: 'api/v1/document',
     expectedStatusCode: 200,
     headers: {
       'Content-Type': 'application/json',
@@ -38,7 +38,7 @@ var routes = {
   },
   docxToPDF: {
     method: 'get',
-    route: 'document',
+    route: 'api/v1/document',
     expectedStatusCode: 200,
     headers: {
       'Content-Type': 'application/json',

@@ -16,13 +16,15 @@ require('winston-configure')(config.log);
 var log = winston.loggers.get('flux-templating');
 log.debug('Initialize service');
 
-var workers = require('./workers');
-var router = require('./router');
+var workers = require('./api/src/workers');
+var router = require('./api/src/router');
 var app = express();
 app.set('log', log);
 app.use(cors());
 
-app.use('/', router);
+app.use('/api/v1', router);
+app.use('/resources', express.static('resources'));
+app.use('/ux', express.static('ux'));
 
 var server;
 exports.run = function(callback) {

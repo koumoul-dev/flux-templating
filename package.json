@@ -27,6 +27,7 @@
     "handlebars-helpers": "^0.5.8",
     "hostile": "^1.0.2",
     "js-yaml": "^3.4.6",
+    "json-editor": "^0.7.23",
     "mime-types": "^2.1.7",
     "node-config": "0.0.2",
     "node-uuid": "^1.4.7",
@@ -45,7 +46,8 @@
     "jscs": "^1.13.1",
     "jshint": "^2.8.0",
     "mocha": "^2.3.4",
-    "should": "^7.1.1"
+    "should": "^7.1.1",
+    "webpack": "^1.12.9"
   },
   "repository": {
     "type": "git",

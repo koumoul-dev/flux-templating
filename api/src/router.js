@@ -29,8 +29,20 @@ function mainRoute(req, res) {
   var msg;
 
   var templatePath = req.query.template || req.query.t;
-  var inputType = req.get('content-type').split(';')[0];
-  var outputType = req.get('accept').split(';')[0];
+
+  // Content negociation can be done either through standard headers or custom
+  // query parameter. This is to allow using the API using a simple HTML link
+  var inputType, outputType;
+  Object.keys(req.query).forEach(function(queryParamKey) {
+    if (queryParamKey.toLowerCase() === 'content-type' || queryParamKey.toLowerCase() === 'c') {
+      inputType = req.query[queryParamKey];
+    }
+    if (queryParamKey.toLowerCase() === 'accept' || queryParamKey.toLowerCase() === 'a') {
+      outputType = req.query[queryParamKey];
+    }
+  });
+  inputType = inputType || req.get('content-type').split(';')[0];
+  outputType = outputType || req.get('accept').split(';')[0];
 
   // No template = pure conversion mode.
   if (!templatePath) {

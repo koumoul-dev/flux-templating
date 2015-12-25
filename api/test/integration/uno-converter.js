@@ -14,7 +14,7 @@ describe('UNO converter', function() {
   });
 
   it('should get a PDF from a docx file', function(callback) {
-    api.document(docxMime, 'application/pdf', null, fs.readFileSync(__dirname + '/../../templates/hello_world.docx'),
+    api.document(docxMime, 'application/pdf', null, fs.readFileSync(__dirname + '/../../../resources/hello_world.docx'),
       function(err) {
         should.not.exist(err);
         // TODO: a way to check the content
@@ -23,7 +23,7 @@ describe('UNO converter', function() {
   });
 
   it('should get a HTML from a docx file', function(callback) {
-    api.document(docxMime, 'text/html', null, fs.readFileSync(__dirname + '/../../templates/hello_world.docx'),
+    api.document(docxMime, 'text/html', null, fs.readFileSync(__dirname + '/../../../resources/hello_world.docx'),
       function(err, result) {
         should.not.exist(err);
         result.should.match(/Hello/);

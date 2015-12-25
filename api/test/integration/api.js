@@ -40,3 +40,18 @@ exports.document = function(inputType, outputType, template, data, callback) {
     callback(null, result);
   });
 };
+
+exports.documentOptions = function(options, callback) {
+  options.url = 'http://localhost:' + config.port + '/api/v1/document';
+  request.post(options, function(err, response) {
+    if (err) return callback(err);
+    if (response.statusCode !== 200) {
+      err = new Error(response.body);
+      err.code = response.statusCode;
+      return callback(err);
+    }
+
+    var result = response.body;
+    callback(null, result);
+  });
+};

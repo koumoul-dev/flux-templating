@@ -2,6 +2,8 @@ var should = require('should');
 
 var api = require('./api');
 
+var docxMime = 'application/vnd.openxmlformats-officedocument.wordprocessingml.document';
+
 describe('Content negociation', function() {
   it('should return a 501 error for unsupported input', function(callback) {
     api.document('application/pdf', 'application/pdf', null, '<html><body>This is a test</body></html>',
@@ -64,5 +66,23 @@ describe('Content negociation', function() {
         err.should.have.property('code', 403);
         callback();
       });
+  });
+
+  it('should support passing headers as query params instead', function(callback) {
+    api.documentOptions({
+      body: JSON.stringify({
+        who: 'World'
+      }),
+      qs: {
+        template: 'hello_world.docx',
+        'content-type': 'application/json',
+        accept: docxMime
+      }
+    }, function(err, result) {
+      should.not.exist(err);
+      result.should.match(/Hello/);
+      result.should.match(/World/);
+      callback();
+    });
   });
 });

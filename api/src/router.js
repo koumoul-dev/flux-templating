@@ -44,6 +44,10 @@ function mainRoute(req, res) {
   inputType = inputType || req.get('content-type').split(';')[0];
   outputType = outputType || req.get('accept').split(';')[0];
 
+  // For easier usage support passing types using shorter file extensions
+  inputType = mime.lookup(inputType) || inputType;
+  outputType = mime.lookup(outputType) || outputType;
+
   // No template = pure conversion mode.
   if (!templatePath) {
     var converter = converters.find(inputType, outputType);

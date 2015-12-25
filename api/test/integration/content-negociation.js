@@ -85,4 +85,22 @@ describe('Content negociation', function() {
       callback();
     });
   });
+
+  it('should support passing types as shorter file extensions', function(callback) {
+    api.documentOptions({
+      body: JSON.stringify({
+        who: 'World'
+      }),
+      qs: {
+        template: 'hello_world.docx',
+        'content-type': 'json',
+        accept: 'docx'
+      }
+    }, function(err, result) {
+      should.not.exist(err);
+      result.should.match(/Hello/);
+      result.should.match(/World/);
+      callback();
+    });
+  });
 });

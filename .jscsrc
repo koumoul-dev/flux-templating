@@ -1,6 +1,6 @@
 {
   "preset": "node-style-guide",
-  "excludeFiles": ["node_modules/**", "coverage/**"],
+  "excludeFiles": ["node_modules/**", "build/**", "ux/bundles/**"],
   "requireTrailingComma": null,
   "requireCurlyBraces": null,
   "maximumLineLength": 120,

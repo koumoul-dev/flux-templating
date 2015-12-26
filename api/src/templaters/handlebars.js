@@ -1,6 +1,6 @@
 var handlebars = require('handlebars');
 require('handlebars-helpers');
-var es = require('event-stream');
+var through2 = require('through2');
 
 var log = require('winston').loggers.get('flux-templating');
 
@@ -14,17 +14,17 @@ exports.createStream = function(templateBuffer) {
 
   // We consume the data stream entirely as
   // handlebars doesn't have a stream mode
-  return es.through(function write(data) {
-    inputBuffers.push(data);
-  }, function end() {
+  return through2(function transform(chunk, enc, callback) {
+    inputBuffers.push(chunk);
+    callback();
+  }, function flush(callback) {
     var input;
     try {
       input = JSON.parse(Buffer.concat(inputBuffers).toString());
     } catch (e) {
       log.warn('Fail to parse input data', e.stack);
       e.statusCode = 400;
-      this.emit('error', e);
-      return this.emit('end');
+      return callback(e);
     }
 
     var template;
@@ -35,11 +35,10 @@ exports.createStream = function(templateBuffer) {
     } catch (e) {
       log.warn('Fail to compile or render handlebars template', e.stack);
       e.statusCode = 400;
-      this.emit('error', e);
-      return this.emit('end');
+      return callback(e);
     }
 
-    this.emit('data', new Buffer(result));
-    this.emit('end');
+    this.push(new Buffer(result));
+    callback();
   });
 };

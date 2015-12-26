@@ -6,6 +6,7 @@ var mime = require('mime-types');
 var templaters = require('./templaters');
 var converters = require('./converters');
 var combiner = require('./combiner');
+var parameters = require('./parameters');
 
 var log = require('winston').loggers.get('flux-templating');
 
@@ -28,86 +29,83 @@ function pipeToReqRes(req, transform, res) {
 function mainRoute(req, res) {
   var msg;
 
-  var templatePath = req.query.template || req.query.t;
+  parameters.get(req, function(params) {
 
-  // Content negociation can be done either through standard headers or custom
-  // query parameter. This is to allow using the API using a simple HTML link
-  var inputType, outputType;
-  Object.keys(req.query).forEach(function(queryParamKey) {
-    if (queryParamKey.toLowerCase() === 'content-type' || queryParamKey.toLowerCase() === 'c') {
-      inputType = req.query[queryParamKey];
+    var data = params.data;
+    var templatePath = params.templatePath;
+    var inputType = params.inputType;
+    var outputType = params.outputType;
+
+    if (params.fileName) {
+      res.set('Content-Disposition', 'attachment; filename="' + params.fileName + '"');
+      res.set('Content-Type', 'application/octet-stream');
+    } else {
+      res.set('Content-Type', params.outputType);
     }
-    if (queryParamKey.toLowerCase() === 'accept' || queryParamKey.toLowerCase() === 'a') {
-      outputType = req.query[queryParamKey];
+
+    // No template = pure conversion mode.
+    if (!templatePath) {
+      var converter = converters.find(inputType, outputType);
+      if (!converter) {
+        msg = 'No converter found from ' + inputType + ' to ' + outputType;
+        log.debug(msg);
+        return res.send(501, msg);
+      }
+      log.debug('Simple conversion from ' + inputType + ' to ' + outputType + ' use converter ' + converter.id);
+      var converterStream = converter.createStream(inputType, outputType);
+
+      return pipeToReqRes(data, converterStream, res);
     }
-  });
-  inputType = inputType || req.get('content-type').split(';')[0];
-  outputType = outputType || req.get('accept').split(';')[0];
 
-  // For easier usage support passing types using shorter file extensions
-  inputType = mime.lookup(inputType) || inputType;
-  outputType = mime.lookup(outputType) || outputType;
+    if (templatePath.match(upPathRegexp)) {
+      msg = 'The template path ' + templatePath + ' tries to go up in the directories. This is forbidden.';
+      log.warn(msg);
+      return res.status(403).send(msg);
+    }
 
-  // No template = pure conversion mode.
-  if (!templatePath) {
-    var converter = converters.find(inputType, outputType);
-    if (!converter) {
-      msg = 'No converter found from ' + inputType + ' to ' + outputType;
+    var templateType = mime.lookup(templatePath);
+    if (!templateType) {
+      msg = 'lookup of mime-type failed for template path ' + templatePath + '. Please use a known file extension.';
       log.debug(msg);
-      return res.send(501, msg);
+      return res.status(400).send(msg);
     }
-    log.debug('Simple conversion from ' + inputType + ' to ' + outputType + ' use converter ' + converter.id);
-    var converterStream = converter.createStream(inputType, outputType);
+    log.debug('Template mime-type is %s based on template path %s', templateType, templatePath);
 
-    return pipeToReqRes(req, converterStream, res);
-  }
-
-  if (templatePath.match(upPathRegexp)) {
-    msg = 'The template path ' + templatePath + ' tries to go up in the directories. This is forbidden.';
-    log.warn(msg);
-    return res.status(403).send(msg);
-  }
-
-  var templateType = mime.lookup(templatePath);
-  if (!templateType) {
-    msg = 'lookup of mime-type failed for template path ' + templatePath + '. Please use a meaningful file extension.';
-    log.debug(msg);
-    return res.status(400).send(msg);
-  }
-  log.debug('Template mime-type is %s based on template path %s', templateType, templatePath);
-
-  var templater = templaters.find(templateType);
-  if (!templater) {
-    msg = 'Template type ' + templateType + ' not matched by supported templaters';
-    log.debug(msg);
-    return res.status(501).send(msg);
-  }
-  log.debug('Templater %s selected base on template mime-type %s', templater.id, templateType);
-
-  var actualPath = path.resolve(__dirname, config.templatesPath, templatePath);
-  fs.readFile(actualPath, function(err, templateBuffer) {
-    if (err && err.code === 'ENOENT') {
-      msg = 'template not found from path ' + templatePath;
-      log.debug(msg, err.stack);
-      return res.status(404).send(msg);
-    }
-    if (err) {
-      msg = 'fail to read template from path ' + templatePath;
-      log.error(msg, err.stack);
-      return res.status(500).send(msg + ' ' + err.message);
-    }
-
-    var combinedStream = combiner.combine(inputType, outputType, templater, templateBuffer);
-
-    if (!combinedStream) {
-      msg = 'Failed to find a conversion path from ' + inputType + ' to ' + outputType;
-      msg += ' from template type ' + templateType;
-      log.error(msg);
+    var templater = templaters.find(templateType);
+    if (!templater) {
+      msg = 'Template type ' + templateType + ' not matched by supported templaters';
+      log.debug(msg);
       return res.status(501).send(msg);
     }
+    log.debug('Templater %s selected base on template mime-type %s', templater.id, templateType);
 
-    pipeToReqRes(req, combinedStream, res);
+    var actualPath = path.resolve(__dirname, config.templatesPath, templatePath);
+    fs.readFile(actualPath, function(err, templateBuffer) {
+      if (err && err.code === 'ENOENT') {
+        msg = 'template not found from path ' + templatePath;
+        log.debug(msg, err.stack);
+        return res.status(404).send(msg);
+      }
+      if (err) {
+        msg = 'fail to read template from path ' + templatePath;
+        log.error(msg, err.stack);
+        return res.status(500).send(msg + ' ' + err.message);
+      }
+
+      var combinedStream = combiner.combine(inputType, outputType, templater, templateBuffer);
+
+      if (!combinedStream) {
+        msg = 'Failed to find a conversion path from ' + inputType + ' to ' + outputType;
+        msg += ' from template type ' + templateType;
+        log.error(msg);
+        return res.status(501).send(msg);
+      }
+
+      pipeToReqRes(data, combinedStream, res);
+    });
   });
+
+
 }
 
 var router = express.Router();

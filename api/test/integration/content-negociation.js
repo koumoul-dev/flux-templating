@@ -1,4 +1,5 @@
 var should = require('should');
+var qs = require('qs');
 
 var api = require('./api');
 
@@ -103,4 +104,132 @@ describe('Content negociation', function() {
       callback();
     });
   });
+
+  it('should support passing all parameters in a form-urlencoded body', function(callback) {
+    api.documentOptions({
+      body: qs.stringify({
+        'content-type': 'json',
+        accept: 'docx',
+        template: 'hello_world.docx',
+        body: {
+          who: 'World'
+        }
+      }),
+      headers: {
+        'content-type': 'x-www-form-urlencoded'
+      }
+    }, function(err, result) {
+      should.not.exist(err);
+      result.should.match(/Hello/);
+      result.should.match(/World/);
+      callback();
+    });
+  });
+
+  it('should support passing all parameters in a multipart-formdata body', function(callback) {
+    api.documentOptions({
+        formData: {
+          'content-type': 'json',
+          accept: 'docx',
+          template: 'hello_world.docx',
+          body: new Buffer(JSON.stringify({
+            who: 'World'
+          }))
+        }
+      },
+      function(err, result) {
+        should.not.exist(err);
+        result.should.match(/Hello/);
+        result.should.match(/World/);
+        callback();
+      });
+  });
+
+  it('should support filename parameter for octet-stream output', function(callback) {
+    api.documentOptions({
+      body: JSON.stringify({
+        who: 'World'
+      }),
+      qs: {
+        template: 'hello_world.docx',
+        'content-type': 'json',
+        accept: 'application/octet-stream',
+        filename: 'hello.docx'
+      }
+    }, function(err, result, response) {
+      should.not.exist(err);
+      response.headers.should.have.property('content-type', 'application/octet-stream');
+      response.headers.should.have.property('content-disposition', 'attachment; filename="hello.docx"');
+      result.should.match(/Hello/);
+      result.should.match(/World/);
+      callback();
+    });
+  });
+
+  it('should support passing fileName in a form-urlencoded body', function(callback) {
+    api.documentOptions({
+      body: qs.stringify({
+        'content-type': 'json',
+        accept: 'application/octet-stream',
+        filename: 'hello.docx',
+        template: 'hello_world.docx',
+        body: {
+          who: 'World'
+        }
+      }),
+      headers: {
+        'content-type': 'x-www-form-urlencoded'
+      }
+    }, function(err, result, response) {
+      should.not.exist(err);
+      response.headers.should.have.property('content-type', 'application/octet-stream');
+      response.headers.should.have.property('content-disposition', 'attachment; filename="hello.docx"');
+      result.should.match(/Hello/);
+      result.should.match(/World/);
+      callback();
+    });
+  });
+
+  it('should support passing fileName in a multipart-formdata body', function(callback) {
+    api.documentOptions({
+        formData: {
+          'content-type': 'json',
+          accept: 'application/octet-stream',
+          fileName: 'hello.docx',
+          template: 'hello_world.docx',
+          body: new Buffer(JSON.stringify({
+            who: 'World'
+          }))
+        }
+      },
+      function(err, result, response) {
+        should.not.exist(err);
+        response.headers.should.have.property('content-type', 'application/octet-stream');
+        response.headers.should.have.property('content-disposition', 'attachment; filename="hello.docx"');
+        result.should.match(/Hello/);
+        result.should.match(/World/);
+        callback();
+      });
+  });
+
+  it('should support use template file name as default', function(callback) {
+    api.documentOptions({
+      body: JSON.stringify({
+        who: 'World'
+      }),
+      qs: {
+        template: 'hello_world.docx',
+        'content-type': 'json',
+        accept: 'application/octet-stream'
+      }
+    }, function(err, result, response) {
+      should.not.exist(err);
+      response.headers.should.have.property('content-type', 'application/octet-stream');
+      response.headers.should.have.property('content-disposition', 'attachment; filename="hello_world.docx"');
+      result.should.match(/Hello/);
+      result.should.match(/World/);
+      callback();
+    });
+  });
+
 });

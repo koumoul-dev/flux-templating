@@ -52,6 +52,6 @@ exports.documentOptions = function(options, callback) {
     }
 
     var result = response.body;
-    callback(null, result);
+    callback(null, result, response);
   });
 };

@@ -14,7 +14,7 @@ start-dist:
 
 # Run the integration part of the test suite againt a new distributable image
 test-dist:
-	docker-compose -f docker-compose/docker-compose-dist.yml build ; docker-compose -f docker-compose/docker-compose-dist.yml up -d ; sleep 2 ; mocha test/integration/*.js ; docker-compose -f docker-compose/docker-compose-dist.yml stop
+	docker-compose -f docker-compose/docker-compose-dist.yml build ; docker-compose -f docker-compose/docker-compose-dist.yml up -d ; sleep 2 ; ./node_modules/.bin/mocha api/test/integration/*.js ; docker-compose -f docker-compose/docker-compose-dist.yml stop
 
 # Run the benchmark part of the test suite againt a new distributable image
 benchmark:

@@ -3,7 +3,7 @@ flux-templating:
   working_dir: /usr/src/app
   command: "node server.js"
   volumes:
-    - .:/usr/src/app
+    - ..:/usr/src/app
   ports:
     - 3111:3111
   links:

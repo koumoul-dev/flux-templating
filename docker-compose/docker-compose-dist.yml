@@ -1,5 +1,5 @@
 flux-templating:
-  build: .
+  build: ..
   ports:
     - 3111:3111
 

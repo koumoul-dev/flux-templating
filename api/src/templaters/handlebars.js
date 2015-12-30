@@ -7,7 +7,7 @@ var log = require('winston').loggers.get('flux-templating');
 exports.id = 'handlebars';
 exports.templateTypes = ['text/x-handlebars-template', 'text/plain', 'text/html'];
 exports.inputTypes = ['application/json'];
-exports.outputTypes = ['text/plain', 'text/html'];
+exports.outputTypes = ['text/html', 'text/plain'];
 
 exports.createStream = function(templateBuffer) {
   var inputBuffers = [];

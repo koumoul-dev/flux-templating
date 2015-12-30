@@ -32,9 +32,7 @@ exports.inputTypes = [
 
 exports.outputTypes = [
   'application/pdf',
-  'text/html',
-  'image/png',
-  'image/svg+xml'
+  'text/html'
 ];
 
 exports.createStream = function(inputType, outputType) {

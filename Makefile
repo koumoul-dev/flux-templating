@@ -27,4 +27,4 @@ check-coverage:
 	./node_modules/.bin/istanbul check-coverage --statement 95
 
 webpack:
-	./node_modules/.bin/webpack --watch ux/src/docx-templater.js ux/bundles/docx-templater.js
+	./node_modules/.bin/webpack

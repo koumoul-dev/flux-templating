@@ -116,7 +116,7 @@ describe('Content negociation', function() {
         }
       }),
       headers: {
-        'content-type': 'x-www-form-urlencoded'
+        'content-type': 'application/x-www-form-urlencoded'
       }
     }, function(err, result) {
       should.not.exist(err);

@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Basic demo of Flux Templating integration</title>
+  </head>
+  <body>
+    <h1>Basic demo of Flux Templating integration</h1>
+
+    <h2>Use docx templating + conversion with simple HTML form</h2>
+
+    <form action="/api/v1/document" method="post">
+      <input type="text" name="content-type" value="application/json" style="display:none">
+      <input type="text" name="accept" value="application/octet-stream" style="display:none">
+      <input type="text" name="template" value="hello_world.docx" style="display:none">
+      <select name="filename">
+        <option>hello.docx</option>
+        <option>hello.pdf</option>
+        <option>hello.html</option>
+      </select>
+      <input type="text" name="body" value='{"who": "world"}'>
+      <input type="submit">
+    </form>
+
+    <h2>Use handlebars (text) templating + conversion with simple HTML form</h2>
+
+    <form action="/api/v1/document" method="post">
+      <input type="text" name="content-type" value="application/json" style="display:none">
+      <input type="text" name="accept" value="application/octet-stream" style="display:none">
+      <input type="text" name="template" value="hello_world.html" style="display:none">
+      <select name="filename">
+        <option>hello.html</option>
+        <option>hello.pdf</option>
+      </select>
+      <input type="text" name="body" value='{"who": "world"}'>
+      <input type="submit">
+    </form>
+
+    <script type="text/javascript" src="bundles/hello-world.js" charset="utf-8"></script>
+  </body>
+</html>

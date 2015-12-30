@@ -34,7 +34,8 @@ function fromFormURLEncoded(req, callback) {
 
     // see http://stackoverflow.com/questions/12755997/how-to-create-streams-from-string-in-node-js
     params.data = new Readable();
-    params.data.push(new Buffer(JSON.stringify(formParams.body)));
+    var body = typeof formParams.body === 'object' ? JSON.stringify(formParams.body) : formParams.body;
+    params.data.push(new Buffer(body));
     params.data.push(null);
 
     callback(params);
@@ -105,7 +106,7 @@ function fromQueryAndHeaders(req, params) {
 
 function getParameters(req, callback) {
   var contentType = req.get('content-type') && req.get('content-type').split(';')[0];
-  if (contentType === 'x-www-form-urlencoded') {
+  if (contentType === 'application/x-www-form-urlencoded') {
     fromFormURLEncoded(req, function(params) {
       callback(fromQueryAndHeaders(req, params));
     });

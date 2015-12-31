@@ -16,9 +16,11 @@ exports.combine = function(inputType, outputType, templater, templateBuffer) {
     for (i = 0; i < templater.inputTypes.length; i++) {
       templaterInputType = templater.inputTypes[i];
       inputConverter = converters.find(inputType, templaterInputType);
-      log.debug('Converter %s selected based on input type %s and templater supported input type',
-        inputConverter.id, inputType, templaterInputType);
-      if (inputConverter) break;
+      if (inputConverter) {
+        log.debug('Converter %s selected based on input type %s and templater supported input type',
+          inputConverter.id, inputType, templaterInputType);
+        break;
+      }
     }
 
     if (!inputConverter) return null;
@@ -30,10 +32,11 @@ exports.combine = function(inputType, outputType, templater, templateBuffer) {
     for (i = 0; i < templater.outputTypes.length; i++) {
       templaterOutputType = templater.outputTypes[i];
       outputConverter = converters.find(templaterOutputType, outputType);
-      log.debug('Converter %s selected based on output type %s and templater supported output type',
-        outputConverter.id, outputType, templaterOutputType);
-
-      if (outputConverter) break;
+      if (outputConverter) {
+        log.debug('Converter %s selected based on output type %s and templater supported output type',
+          outputConverter.id, outputType, templaterOutputType);
+        break;
+      }
     }
 
     if (!outputConverter) return null;

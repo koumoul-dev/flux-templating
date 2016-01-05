@@ -37,6 +37,10 @@ It uses [handlebars](http://handlebarsjs.com/) with a bunch of useful additional
 
 It uses [docxtemplater](https://github.com/open-xml-templating/docxtemplater) with its optional angular expressions parser.
 
+### Xlsx templating
+
+It uses [xlsx-template](https://github.com/optilude/xlsx-template) and supports filling multiple sheets if an array is passed as JSON input.
+
 ## Writing converters and templaters
 
 All type definitions should strictly respect standard mime-types. See the [mime-db](https://github.com/jshttp/mime-db/blob/master/db.json) project for a comprehensive list.

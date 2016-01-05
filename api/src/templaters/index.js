@@ -1,6 +1,7 @@
 var templaters = [
   require('./handlebars'),
-  require('./docxtemplater')
+  require('./docxtemplater'),
+  require('./xlsx-template')
 ];
 
 // Find the right templater to use given the mime-type of a template file

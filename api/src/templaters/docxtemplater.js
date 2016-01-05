@@ -1,5 +1,4 @@
 var Docxtemplater = require('docxtemplater');
-//var es = require('event-stream');
 var through2 = require('through2');
 var expressions = require('angular-expressions');
 

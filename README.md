@@ -27,7 +27,11 @@ Apply a docx template to JSON data:
 
 ### HTML to PDF transformation
 
-It uses [html-pdf](https://www.npmjs.com/package/html-pdf) which itself uses [phantomjs](http://phantomjs.org/) a headless Web browser based on webkit.
+It uses [html-pdf](https://www.npmjs.com/package/html-pdf) which itself uses [phantomjs](http://phantomjs.org/) a headless Web browser based on webkit. These tasks are delegated to a [phantomjs worker](https://github.com/flux-s/phantomjs-worker).
+
+### Docx and Xlsx to PDF transformation
+
+It uses [unoconv](https://github.com/dagwieers/unoconv) that itself uses [libre office](https://www.libreoffice.org/). These tasks are delegated to a [unoconv worker](https://github.com/flux-s/unoconv-worker).
 
 ### Textual and HTML templating
 
@@ -48,6 +52,11 @@ All type definitions should strictly respect standard mime-types. See the [mime-
 A converter is defined by the input and output types it supports. It defines a createStream(inputType, outputType) method that returns a standard node.js transform stream to be applied to the input data.
 
 A templater is defined by the template type it expects and the input and output types it supports. It defines a createStream(templateBuffer, inputType, outputType) method that returns a standard node.js transform stream to be applied to the input data.
+
+Some templating or conversion libraries have specific system dependancies. They are isolated into small independant worker services, that share the same HTTP API. This API is very similar to the one of flux-templating that acts as orchestrator. There are 3 worker services for now:
+  - [phantomjs](https://github.com/flux-s/phantomjs-worker)
+  - [unoconv](https://github.com/flux-s/unoconv-worker)
+  - [cairo](https://github.com/flux-s/cairo-worker)
 
 ## Development environment
 
